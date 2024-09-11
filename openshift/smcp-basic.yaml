@@ -1,0 +1,55 @@
+---
+apiVersion: maistra.io/v2
+kind: ServiceMeshControlPlane
+metadata:
+  name: basic
+  namespace: istio-system
+spec:
+  version: v2.6
+  # security:
+  #   dataPlane:
+  #     mtls: true
+  telemetry:
+    type: Istiod
+  tracing:
+    type: None
+    sampling: 10000
+  addons:
+    kiali:
+      enabled: true
+      name: kiali
+    grafana:
+      enabled: true
+  meshConfig:
+    extensionProviders:
+      - name: prometheus
+        prometheus: {}
+      # - name: tempo
+      #   zipkin:
+      #     service: tempo-sample-distributor.openshift-tempo.svc.cluster.local
+      #     port: 9411
+      - name: otel
+        opentelemetry:
+          port: 4317
+          service: otel-collector.otel.svc.cluster.local
+  # proxy:
+  #   logging:
+  #     level: info
+  #   networking:
+  #     trafficControl:
+  #       inbound: {}
+  #       outbound:
+  #         policy: ALLOW_ANY #All services are allowed
+  #         policy: REGISTRY_ONLY #Only Kubernetes Services and Service Entries are allowed
+  runtime:
+    defaults:
+      pod:
+        nodeSelector: 
+          node-role.kubernetes.io/infra: ""
+        tolerations: 
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/infra
+          value: reserved
+        - effect: NoExecute
+          key: node-role.kubernetes.io/infra
+          value: reserved
