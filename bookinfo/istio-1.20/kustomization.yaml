@@ -1,0 +1,27 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Original content: https://raw.githubusercontent.com/Maistra/istio/maistra-2.6/samples/bookinfo/platform/kube/bookinfo.yaml
+  - svc-details-9080.yaml
+  - serviceaccount-bookinfo-details.yaml
+  - deployment-details-v1.yaml
+  - svc-ratings-9080.yaml
+  - serviceaccount-bookinfo-ratings.yaml
+  - deployment-ratings-v1.yaml
+  - svc-reviews-9080.yaml
+  - serviceaccount-bookinfo-reviews.yaml
+  - deployment-reviews-v1.yaml
+  - deployment-reviews-v2.yaml
+  - deployment-reviews-v3.yaml
+  - svc-productpage-9080.yaml
+  - serviceaccount-bookinfo-productpage.yaml
+  - deployment-productpage-v1.yaml
+  # Original content: https://raw.githubusercontent.com/Maistra/istio/maistra-2.6/samples/bookinfo/networking/bookinfo-gateway.yaml
+  - gateway-bookinfo-gateway.yaml
+  - virtualservice-bookinfo.yaml
+  # Original content: https://raw.githubusercontent.com/Maistra/istio/maistra-2.6/samples/bookinfo/networking/destination-rule-all.yaml
+  - destinationrule-productpage.yaml
+  - destinationrule-reviews.yaml
+  - destinationrule-ratings.yaml
+  - destinationrule-details.yaml

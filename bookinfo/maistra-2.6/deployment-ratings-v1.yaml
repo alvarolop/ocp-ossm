@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ratings
+    version: v1
+  name: ratings-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ratings
+      version: v1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'true'
+      labels:
+        app: ratings
+        version: v1
+    spec:
+      containers:
+      - image: quay.io/maistra/examples-bookinfo-ratings-v1:2.6.0
+        imagePullPolicy: IfNotPresent
+        name: ratings
+        ports:
+        - containerPort: 9080
+      serviceAccountName: bookinfo-ratings

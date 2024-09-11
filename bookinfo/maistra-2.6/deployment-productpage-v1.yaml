@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: productpage
+    version: v1
+  name: productpage-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: productpage
+      version: v1
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: '9080'
+        prometheus.io/scrape: 'true'
+        sidecar.istio.io/inject: 'true'
+      labels:
+        app: productpage
+        version: v1
+    spec:
+      containers:
+      - image: quay.io/maistra/examples-bookinfo-productpage-v1:2.6.0
+        imagePullPolicy: IfNotPresent
+        name: productpage
+        ports:
+        - containerPort: 9080
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+      serviceAccountName: bookinfo-productpage
+      volumes:
+      - emptyDir: {}
+        name: tmp

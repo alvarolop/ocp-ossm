@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: details
+    version: v1
+  name: details-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: details
+      version: v1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'true'
+      labels:
+        app: details
+        version: v1
+    spec:
+      containers:
+      - image: quay.io/maistra/examples-bookinfo-details-v1:2.6.0
+        imagePullPolicy: IfNotPresent
+        name: details
+        ports:
+        - containerPort: 9080
+      serviceAccountName: bookinfo-details
