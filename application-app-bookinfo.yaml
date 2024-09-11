@@ -1,0 +1,23 @@
+---
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: bookinfo
+  name: app-bookinfo
+  namespace: gitops
+  source:
+    path: bookinfo
+    repoURL: https://github.com/alvarolop/ocp-ossm.git
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: app-bookinfo
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    # syncOptions:
+    #   - CreateNamespace=true
